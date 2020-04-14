@@ -24,6 +24,7 @@ import useAnimatedComponents from "./hooks/useAnimatedComponents";
 import useImageIndexChange from "./hooks/useImageIndexChange";
 import useRequestClose from "./hooks/useRequestClose";
 import { ImageSource } from "./@types";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type Props = {
   images: ImageSource[];
@@ -38,6 +39,7 @@ type Props = {
   doubleTapToZoomEnabled?: boolean;
   HeaderComponent?: ComponentType<{ imageIndex: number }>;
   FooterComponent?: ComponentType<{ imageIndex: number }>;
+  VideoButtonCallback?: (video: {}) => void;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
@@ -57,7 +59,8 @@ function ImageViewing({
   swipeToCloseEnabled,
   doubleTapToZoomEnabled,
   HeaderComponent,
-  FooterComponent
+  FooterComponent,
+  VideoButtonCallback
 }: Props) {
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -121,13 +124,32 @@ function ImageViewing({
             index
           })}
           renderItem={({ item: imageSrc }) => (
-            <ImageItem
-              onZoom={onZoom}
-              imageSrc={imageSrc}
-              onRequestClose={onRequestCloseEnhanced}
-              swipeToCloseEnabled={swipeToCloseEnabled}
-              doubleTapToZoomEnabled={doubleTapToZoomEnabled}
-            />
+            <View style={{flex: 1}}>
+              <ImageItem
+                onZoom={onZoom}
+                imageSrc={imageSrc}
+                onRequestClose={onRequestCloseEnhanced}
+                swipeToCloseEnabled={swipeToCloseEnabled}
+                doubleTapToZoomEnabled={doubleTapToZoomEnabled}
+              />
+              { imageSrc.type == "VideoMessage" &&
+                <View style={styles.imageContainer}>
+                  <MaterialIcons.Button
+                    borderRadius={20}
+                    backgroundColor="#00000050"
+                    iconStyle={{marginLeft: 10}}
+                    name={'play-arrow'}
+                    size={40}
+                    color="white"
+                    onPress={() => {
+                      if (VideoButtonCallback) {
+                        VideoButtonCallback(imageSrc)
+                      }
+                    }}
+                  />
+                </View>
+              }
+            </View>
           )}
           onMomentumScrollEnd={onScroll}
           keyExtractor={imageSrc => imageSrc.uri}
@@ -162,7 +184,16 @@ const styles = StyleSheet.create({
     width: "100%",
     zIndex: 1,
     bottom: 0
-  }
+  },
+  imageContainer: {
+    position: 'absolute',
+    top: 80,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const EnhancedImageViewing = (props: Props) => (
