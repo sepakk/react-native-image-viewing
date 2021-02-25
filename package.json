@@ -1,12 +1,12 @@
 {
-  "name": "react-native-image-viewing",
-  "version": "0.1.8",
-  "description": "React Native modal component for viewing images as a sliding gallery",
+  "name": "react-native-image-video-viewing",
+  "version": "0.1.9",
+  "description": "React Native modal component for viewing images and videos as a sliding gallery",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jobtoday/react-native-image-viewing.git"
+    "url": "git+https://github.com/sepakk/react-native-image-viewing.git"
   },
   "keywords": [
     "react",
@@ -18,8 +18,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "postversion": "yarn build",
-    "postinstall": "tsc --outDir ./dist"
+    "postversion": "yarn build"
   },
   "peerDependencies": {
     "react": ">=16.11.0",
@@ -30,12 +29,12 @@
     "readme.md",
     "package.json"
   ],
-  "author": "Anton Kalinin",
+  "author": "Anton Kalinin, Sebastian Pachon",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jobtoday/react-native-image-viewing/issues"
   },
-  "homepage": "https://github.com/jobtoday/react-native-image-viewing#readme",
+  "homepage": "https://github.com/sepakk/react-native-image-viewing#readme",
   "devDependencies": {
     "@babel/runtime": "7.7.4",
     "@types/react": "16.9.13",
@@ -43,6 +42,7 @@
     "react": "16.12.0",
     "react-native": "0.61.5",
     "typescript": "3.7.2",
-    "react-native-vector-icons": "6.6.0"
+    "react-native-vector-icons": "6.6.0",
+    "react-native-linear-gradient": "^2.5.6"
   }
 }

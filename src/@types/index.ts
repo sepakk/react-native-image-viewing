@@ -16,4 +16,4 @@ export type Position = {
   y: number;
 };
 
-export type ImageSource = { uri: string, type: String };
+export type ImageSource = { uri: string, type: String, print_button: Boolean };
