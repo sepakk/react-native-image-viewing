@@ -35,6 +35,7 @@ type Props = {
   onZoom: (isZoomed: boolean) => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  onLoad: () => void;
 };
 
 const ImageItem = ({
