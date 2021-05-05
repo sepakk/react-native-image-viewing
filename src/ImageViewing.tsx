@@ -6,7 +6,7 @@
  *
  */
 
-import React, { ComponentType, useCallback, useEffect } from "react";
+import React, { ComponentType, useCallback, useEffect, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -79,12 +79,16 @@ function ImageViewing({
     footerTransform,
     toggleBarsVisible
   ] = useAnimatedComponents();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     if (onImageIndexChange) {
+      setImageLoaded(false);
       onImageIndexChange(currentImageIndex);
     }
   }, [currentImageIndex]);
+
+  const onFinishLoad = useCallback(() => setImageLoaded(true), []);
 
   const onZoom = useCallback(
     (isScaled: boolean) => {
@@ -136,6 +140,7 @@ function ImageViewing({
             <View style={{flex: 1, position: 'relative'}}>
               <ImageItem
                 onZoom={onZoom}
+                onLoad={onFinishLoad}
                 imageSrc={(imageSrc.thumbnail_url !== null && imageSrc.media_url !== null) ? imageSrc : {} as ImageSource}
                 onRequestClose={onRequestCloseEnhanced}
                 swipeToCloseEnabled={swipeToCloseEnabled}
@@ -163,6 +168,7 @@ function ImageViewing({
                 </View>
               }
               { imageSrc.print_button == true &&
+                imageLoaded &&
                 <TouchableOpacity 
                   onPress={()=>{
                     if(PrintButtonCallback){
