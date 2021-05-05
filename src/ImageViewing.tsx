@@ -13,6 +13,7 @@ import {
   StyleSheet,
   View,
   VirtualizedList,
+  Text,
   TouchableOpacity,
   ModalProps,
   Image
@@ -45,6 +46,7 @@ type Props = {
   FooterComponent?: ComponentType<{ imageIndex: number }>;
   VideoButtonCallback?: (video: {}) => void;
   PrintButtonCallback?: (item: {}) => void;
+  defaultVideoErrorMessage?: string;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
@@ -66,7 +68,8 @@ function ImageViewing({
   HeaderComponent,
   FooterComponent,
   VideoButtonCallback,
-  PrintButtonCallback
+  PrintButtonCallback,
+  defaultVideoErrorMessage
 }: Props) {
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -138,26 +141,30 @@ function ImageViewing({
               <ImageItem
                 onZoom={onZoom}
                 onLoad={onFinishLoad}
-                imageSrc={imageSrc}
+                imageSrc={(imageSrc.thumbnail_url !== null && imageSrc.media_url !== null) ? imageSrc : {} as ImageSource}
                 onRequestClose={onRequestCloseEnhanced}
                 swipeToCloseEnabled={swipeToCloseEnabled}
                 doubleTapToZoomEnabled={doubleTapToZoomEnabled}
               />
               { imageSrc.type == "VideoMessage" &&
                 <View style={styles.imageContainer}>
-                  <MaterialIcons.Button
-                    borderRadius={20}
-                    backgroundColor="#00000050"
-                    iconStyle={{marginLeft: 10}}
-                    name={'play-arrow'}
-                    size={40}
-                    color="white"
-                    onPress={() => {
-                      if (VideoButtonCallback) {
-                        VideoButtonCallback(imageSrc)
-                      }
-                    }}
-                  />
+                  {imageSrc.thumbnail_url !== null && imageSrc.media_url !== null ? (
+                    <MaterialIcons.Button
+                      borderRadius={20}
+                      backgroundColor="#00000050"
+                      iconStyle={{marginLeft: 10}}
+                      name={'play-arrow'}
+                      size={40}
+                      color="white"
+                      onPress={() => {
+                        if (VideoButtonCallback) {
+                          VideoButtonCallback(imageSrc)
+                        }
+                      }}
+                    />
+                  ) : (
+                  <Text style={{marginRight: 24, marginLeft: 24, color: 'white', textAlign: 'center'}}>{defaultVideoErrorMessage}</Text>
+                  )}
                 </View>
               }
               { imageSrc.print_button == true &&
@@ -173,7 +180,7 @@ function ImageViewing({
                     <Image
                         style={{height: '80%', alignSelf: 'center'}}
                         resizeMode={'contain'}
-                        source={require('../assets/images/print.png')}
+                        source={require('./assets/print.png')}
                       />
                   </LinearGradient>
                 </TouchableOpacity>

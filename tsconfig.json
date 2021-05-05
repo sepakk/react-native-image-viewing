@@ -11,5 +11,5 @@
     "types": ["react", "react-native"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/assets/", "src/assets/*"]
 }
