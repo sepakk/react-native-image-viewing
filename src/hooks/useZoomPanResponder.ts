@@ -211,11 +211,10 @@ const useZoomPanResponder = ({
 
         /**
          * In case image is scaling smaller than initial size ->
-         * slow down this transition by applying OUT_BOUND_MULTIPLIER
+         * don't allow zooming out, return to initial scale
          */
         if (nextScale < initialScale) {
-          nextScale =
-            nextScale + (initialScale - nextScale) * OUT_BOUND_MULTIPLIER;
+          nextScale = initialScale;
         }
 
         /**
