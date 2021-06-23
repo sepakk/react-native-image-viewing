@@ -83,10 +83,11 @@ function ImageViewing({
 
   useEffect(() => {
     if (onImageIndexChange) {
-      setImageLoaded(false);
       onImageIndexChange(currentImageIndex);
     }
   }, [currentImageIndex]);
+
+  const onStartLoad = useCallback(() => setImageLoaded(false), []);
 
   const onFinishLoad = useCallback(() => setImageLoaded(true), []);
 
@@ -140,7 +141,8 @@ function ImageViewing({
             <View style={{flex: 1, position: 'relative'}}>
               <ImageItem
                 onZoom={onZoom}
-                onLoad={onFinishLoad}
+                onLoadEnd={onFinishLoad}
+                onLoadStart={onStartLoad}
                 imageSrc={(imageSrc.thumbnail_url !== null && imageSrc.media_url !== null) ? imageSrc : {} as ImageSource}
                 onRequestClose={onRequestCloseEnhanced}
                 swipeToCloseEnabled={swipeToCloseEnabled}

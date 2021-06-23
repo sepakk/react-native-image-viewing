@@ -33,6 +33,8 @@ type Props = {
   imageSrc: ImageSource;
   onRequestClose: () => void;
   onZoom: (isZoomed: boolean) => void;
+  onLoadEnd: () => void;
+  onLoadStart: () => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
   onLoad: () => void;
@@ -40,7 +42,8 @@ type Props = {
 
 const ImageItem = ({
   imageSrc,
-  onLoad,
+  onLoadEnd,
+  onLoadStart,
   onZoom,
   onRequestClose,
   swipeToCloseEnabled = true,
@@ -122,10 +125,9 @@ const ImageItem = ({
         {...panHandlers}
         source={imageSrc}
         style={imageStylesWithOpacity}
-        onLoad={() => {
-          onLoad();
-          onLoaded();
-        }}
+        onLoad={onLoaded}
+        onLoadStart={onLoadStart}
+        onLoadEnd={onLoadEnd}
       />
       {(!isLoaded || !imageDimensions) && <ImageLoading />}
     </Animated.ScrollView>
