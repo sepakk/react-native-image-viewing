@@ -16,7 +16,7 @@ import {
   PanResponderGestureState
 } from "react-native";
 
-import { Position } from "../@types";
+import { Position, Dimensions } from "../@types";
 import {
   createPanResponder,
   getDistanceBetweenTouches,
@@ -25,8 +25,7 @@ import {
 } from "../utils";
 
 const SCREEN = Dimensions.get("window");
-const SCREEN_WIDTH = SCREEN.width;
-const SCREEN_HEIGHT = SCREEN.height;
+
 
 const SCALE_MAX = 2;
 const DOUBLE_TAP_DELAY = 300;
@@ -37,13 +36,15 @@ type Props = {
   initialTranslate: Position;
   onZoom: (isZoomed: boolean) => void;
   doubleTapToZoomEnabled: boolean;
+  SCREEN: Dimensions;
 };
 
 const useZoomPanResponder = ({
   initialScale,
   initialTranslate,
   onZoom,
-  doubleTapToZoomEnabled
+  doubleTapToZoomEnabled,
+  SCREEN,
 }: Props): Readonly<[
   GestureResponderHandlers,
   Animated.Value,
@@ -58,6 +59,8 @@ const useZoomPanResponder = ({
   let isDoubleTapPerformed = false;
   let lastTapTS: number | null = null;
 
+  const SCREEN_WIDTH = SCREEN.width;
+  const SCREEN_HEIGHT = SCREEN.height;
   const scaleValue = new Animated.Value(initialScale);
   const translateValue = new Animated.ValueXY(initialTranslate);
 

@@ -51,8 +51,6 @@ type Props = {
 
 const DEFAULT_ANIMATION_TYPE = "fade";
 const DEFAULT_BG_COLOR = "#000";
-const SCREEN = Dimensions.get("screen");
-const SCREEN_WIDTH = SCREEN.width;
 
 function ImageViewing({
   images,
@@ -71,6 +69,8 @@ function ImageViewing({
   PrintButtonCallback,
   defaultVideoErrorMessage
 }: Props) {
+  const [SCREEN, setSCREEN] = useState(Dimensions.get('window'));
+  const SCREEN_WIDTH = SCREEN.width
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
   const [currentImageIndex, onScroll] = useImageIndexChange(imageIndex, SCREEN);
@@ -80,6 +80,16 @@ function ImageViewing({
     toggleBarsVisible
   ] = useAnimatedComponents();
   const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const onChange = (result) => {
+      setSCREEN(result.window);
+    };
+
+    Dimensions.addEventListener('change', onChange);
+
+    return () => Dimensions.removeEventListener('change', onChange);
+  });
 
   useEffect(() => {
     if (onImageIndexChange) {
@@ -147,6 +157,7 @@ function ImageViewing({
                 onRequestClose={onRequestCloseEnhanced}
                 swipeToCloseEnabled={swipeToCloseEnabled}
                 doubleTapToZoomEnabled={doubleTapToZoomEnabled}
+                SCREEN={SCREEN}
               />
               { imageSrc.type == "VideoMessage" &&
                 <View style={styles.imageContainer}>

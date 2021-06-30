@@ -20,14 +20,11 @@ import useImageDimensions from "../../hooks/useImageDimensions";
 import useZoomPanResponder from "../../hooks/useZoomPanResponder";
 
 import { getImageStyles, getImageTransform } from "../../utils";
-import { ImageSource } from "../../@types";
+import { Dimensions, ImageSource } from "../../@types";
 import { ImageLoading } from "./ImageLoading";
 
 const SWIPE_CLOSE_OFFSET = 75;
 const SWIPE_CLOSE_VELOCITY = 1.75;
-const SCREEN = Dimensions.get("window");
-const SCREEN_WIDTH = SCREEN.width;
-const SCREEN_HEIGHT = SCREEN.height;
 
 type Props = {
   imageSrc: ImageSource;
@@ -37,6 +34,7 @@ type Props = {
   onLoadStart: () => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  SCREEN: Dimensions;
 };
 
 const ImageItem = ({
@@ -46,7 +44,8 @@ const ImageItem = ({
   onZoom,
   onRequestClose,
   swipeToCloseEnabled = true,
-  doubleTapToZoomEnabled = true
+  doubleTapToZoomEnabled = true,
+  SCREEN,
 }: Props) => {
   const imageContainer = React.createRef();
   const imageDimensions = useImageDimensions(imageSrc);
@@ -69,7 +68,8 @@ const ImageItem = ({
     initialScale: scale || 1,
     initialTranslate: translate || { x: 0, y: 0 },
     onZoom: onZoomPerformed,
-    doubleTapToZoomEnabled
+    doubleTapToZoomEnabled,
+    SCREEN,
   });
 
   const imagesStyles = getImageStyles(
@@ -135,11 +135,11 @@ const ImageItem = ({
 
 const styles = StyleSheet.create({
   listItem: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT
+    width: '100%',
+    height: '100%',
   },
   imageScrollContainer: {
-    height: SCREEN_HEIGHT * 2
+    height: '200%',
   }
 });
 
