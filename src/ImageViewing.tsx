@@ -69,7 +69,8 @@ function ImageViewing({
   PrintButtonCallback,
   defaultVideoErrorMessage
 }: Props) {
-  const [SCREEN, setSCREEN] = useState(Dimensions.get('window'));
+  const window = Dimensions.get('window')
+  const [SCREEN, setSCREEN] = useState({height: window.height, width: window.width});
   const SCREEN_WIDTH = SCREEN.width
   const imageList = React.createRef<VirtualizedList<ImageSource>>();
   const [opacity, onRequestCloseEnhanced] = useRequestClose(onRequestClose);
@@ -83,7 +84,7 @@ function ImageViewing({
 
   useEffect(() => {
     const onChange = (result: { window: any; }) => {
-      setSCREEN(result.window);
+      setSCREEN({height: result.window.height, width: result.window.width});
     };
 
     Dimensions.addEventListener('change', onChange);
