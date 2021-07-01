@@ -16,7 +16,7 @@ import {
   PanResponderGestureState
 } from "react-native";
 
-import { Position, Dimensions } from "../@types";
+import { Position, Dimensions as DimensionsType } from "../@types";
 import {
   createPanResponder,
   getDistanceBetweenTouches,
@@ -36,7 +36,7 @@ type Props = {
   initialTranslate: Position;
   onZoom: (isZoomed: boolean) => void;
   doubleTapToZoomEnabled: boolean;
-  SCREEN: Dimensions;
+  SCREEN: DimensionsType;
 };
 
 const useZoomPanResponder = ({
