@@ -20,7 +20,7 @@ import useImageDimensions from "../../hooks/useImageDimensions";
 import useZoomPanResponder from "../../hooks/useZoomPanResponder";
 
 import { getImageStyles, getImageTransform } from "../../utils";
-import { Dimensions, ImageSource } from "../../@types";
+import { Dimensions as DimensionsType, ImageSource } from "../../@types";
 import { ImageLoading } from "./ImageLoading";
 
 const SWIPE_CLOSE_OFFSET = 75;
@@ -34,7 +34,7 @@ type Props = {
   onLoadStart: () => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
-  SCREEN: Dimensions;
+  SCREEN: DimensionsType;
 };
 
 const ImageItem = ({
