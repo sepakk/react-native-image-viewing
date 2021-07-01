@@ -35,6 +35,7 @@ type Props = {
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
   SCREEN: DimensionsType;
+  onLoad: () => void;
 };
 
 const ImageItem = ({
