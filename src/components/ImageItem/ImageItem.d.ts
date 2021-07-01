@@ -7,7 +7,7 @@
  */
 
 import React from "react";
-import { ImageSource } from "../../@types";
+import { ImageSource, Dimensions } from "../../@types";
 
 declare type Props = {
   imageSrc: ImageSource;
@@ -17,6 +17,7 @@ declare type Props = {
   onZoom: (isZoomed: boolean) => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  SCREEN?: Dimensions;
 };
 
 declare const _default: React.MemoExoticComponent<({
