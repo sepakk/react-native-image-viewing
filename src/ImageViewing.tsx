@@ -82,7 +82,7 @@ function ImageViewing({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    const onChange = (result) => {
+    const onChange = (result: { window: any; }) => {
       setSCREEN(result.window);
     };
 
