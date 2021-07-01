@@ -109,7 +109,7 @@ const ImageItem = ({
   return (
     <Animated.ScrollView
       ref={imageContainer}
-      style={styles.listItem}
+      style={{width: SCREEN.width, height: SCREEN.height}}
       pagingEnabled
       nestedScrollEnabled
       showsHorizontalScrollIndicator={false}
