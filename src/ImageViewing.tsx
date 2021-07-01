@@ -28,7 +28,7 @@ import ImageDefaultHeader from "./components/ImageDefaultHeader";
 import useAnimatedComponents from "./hooks/useAnimatedComponents";
 import useImageIndexChange from "./hooks/useImageIndexChange";
 import useRequestClose from "./hooks/useRequestClose";
-import { ImageSource } from "./@types";
+import { Dimensions as DimensionsType, ImageSource } from "./@types";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type Props = {
@@ -82,7 +82,7 @@ function ImageViewing({
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    const onChange = (result) => {
+    const onChange = (result: any) => {
       setSCREEN(result.window);
     };
 
@@ -110,6 +110,7 @@ function ImageViewing({
     [imageList]
   );
 
+  const SCREEN_TYPE : DimensionsType = {width: SCREEN.width, height: SCREEN.height};
   return (
     <Modal
       transparent
@@ -157,7 +158,7 @@ function ImageViewing({
                 onRequestClose={onRequestCloseEnhanced}
                 swipeToCloseEnabled={swipeToCloseEnabled}
                 doubleTapToZoomEnabled={doubleTapToZoomEnabled}
-                SCREEN={SCREEN}
+                SCREEN={SCREEN_TYPE}
               />
               { imageSrc.type == "VideoMessage" &&
                 <View style={styles.imageContainer}>

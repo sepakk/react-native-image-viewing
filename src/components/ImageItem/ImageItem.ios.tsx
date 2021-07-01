@@ -23,7 +23,7 @@ import useDoubleTapToZoom from "../../hooks/useDoubleTapToZoom";
 import useImageDimensions from "../../hooks/useImageDimensions";
 
 import { getImageStyles, getImageTransform } from "../../utils";
-import { ImageSource } from "../../@types";
+import { Dimensions as DimensionsType, ImageSource } from "../../@types";
 import { ImageLoading } from "./ImageLoading";
 
 const SWIPE_CLOSE_OFFSET = 75;
@@ -38,6 +38,7 @@ type Props = {
   onZoom: (scaled: boolean) => void;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
+  SCREEN: DimensionsType;
 };
 
 const ImageItem = ({
@@ -45,7 +46,8 @@ const ImageItem = ({
   onZoom,
   onRequestClose,
   swipeToCloseEnabled = true,
-  doubleTapToZoomEnabled = true
+  doubleTapToZoomEnabled = true,
+  SCREEN,
 }: Props) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const [loaded, setLoaded] = useState(false);
