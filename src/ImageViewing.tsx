@@ -81,10 +81,15 @@ function ImageViewing({
     toggleBarsVisible
   ] = useAnimatedComponents();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [displayList, setDisplayList] = useState(true);
 
   useEffect(() => {
     const onChange = (result: { window: any; }) => {
       setSCREEN({height: result.window.height, width: result.window.width});
+      setDisplayList(false)
+      setTimeout(() => {
+        setDisplayList(true)
+      }, 100);
     };
 
     Dimensions.addEventListener('change', onChange);
@@ -131,7 +136,7 @@ function ImageViewing({
             <ImageDefaultHeader onRequestClose={onRequestCloseEnhanced} />
           )}
         </Animated.View>
-        <VirtualizedList
+        {displayList && <VirtualizedList
           ref={imageList}
           data={images}
           horizontal
@@ -141,7 +146,7 @@ function ImageViewing({
           maxToRenderPerBatch={1}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          initialScrollIndex={imageIndex}
+          initialScrollIndex={currentImageIndex}
           getItem={(_, index) => images[index]}
           getItemCount={() => images.length}
           getItemLayout={(_, index) => ({
@@ -205,7 +210,7 @@ function ImageViewing({
           )}
           onMomentumScrollEnd={onScroll}
           keyExtractor={imageSrc => imageSrc.uri}
-        />
+        />}
         {typeof FooterComponent !== "undefined" && (
           <Animated.View
             style={[styles.footer, { transform: footerTransform }]}
