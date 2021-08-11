@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   closeButton: {
     marginRight: 8,
     marginTop: 8,
-    width: 45,
-    height: 45,
+    minWidth: 45,
+    minHeight: 45,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 22.5,
