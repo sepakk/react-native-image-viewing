@@ -1,6 +1,6 @@
 {
   "name": "react-native-image-video-viewing",
-  "version": "0.1.18",
+  "version": "0.1.21",
   "description": "React Native modal component for viewing images and videos as a sliding gallery",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

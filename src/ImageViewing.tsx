@@ -67,7 +67,8 @@ function ImageViewing({
   FooterComponent,
   VideoButtonCallback,
   PrintButtonCallback,
-  defaultVideoErrorMessage
+  defaultVideoErrorMessage,
+  printAdditionalProps,
 }: Props) {
   const window = Dimensions.get('window')
   const [SCREEN, setSCREEN] = useState({height: window.height, width: window.width});
@@ -195,7 +196,8 @@ function ImageViewing({
                       PrintButtonCallback(imageSrc)
                     }
                   }}
-                style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', bottom: 0, left: 0, right: 0, height: 60}}>
+                  style={{position: 'absolute', alignItems: 'center', justifyContent: 'center', bottom: 0, left: 0, right: 0, height: 60}}
+                  {...printAdditionalProps}>
                   <LinearGradient style={{width: '100%', height: 60, flex: 1}} colors={['#00000000', '#000000']} >
                     <Image
                         style={{height: '80%', alignSelf: 'center'}}
