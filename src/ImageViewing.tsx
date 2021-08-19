@@ -47,6 +47,7 @@ type Props = {
   VideoButtonCallback?: (video: {}) => void;
   PrintButtonCallback?: (item: {}) => void;
   defaultVideoErrorMessage?: string;
+  printAdditionalProps?: ComponentType<{ imageIndex: number }>;
 };
 
 const DEFAULT_ANIMATION_TYPE = "fade";
