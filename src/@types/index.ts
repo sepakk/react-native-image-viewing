@@ -32,4 +32,4 @@ export type ImageSource = {
   print_button: Boolean, 
   thumbnail_url: String, 
   media_url: String
-} | ImageRequireSource;
+};
