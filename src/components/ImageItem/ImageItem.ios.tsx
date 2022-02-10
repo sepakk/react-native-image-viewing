@@ -63,7 +63,7 @@ const ImageItem = ({
   const [translate, scale] = getImageTransform(imageDimensions, SCREEN);
   const scrollValueY = new Animated.Value(0);
   const scaleValue = new Animated.Value(scale || 1);
-  const translateValue = new Animated.ValueXY(translate);
+  const translateValue = new Animated.ValueXY(translate || {x: 0, y: 0});
   const maxScale = scale && scale > 0 ? Math.max(1 / scale, 1) : 1;
 
   const imageOpacity = scrollValueY.interpolate({
