@@ -13,11 +13,11 @@ import {
   Dimensions,
   StyleSheet,
   NativeScrollEvent,
-  NativeSyntheticEvent
+  NativeSyntheticEvent,
 } from "react-native";
 
 import useImageDimensions from "../../hooks/useImageDimensions";
-import useZoomPanResponder from "../../hooks/useZoomPanResponder";
+import usePanResponder from "../../hooks/usePanResponder";
 
 import { getImageStyles, getImageTransform } from "../../utils";
 import { Dimensions as DimensionsType, ImageSource } from "../../@types";
@@ -25,13 +25,15 @@ import { ImageLoading } from "./ImageLoading";
 
 const SWIPE_CLOSE_OFFSET = 75;
 const SWIPE_CLOSE_VELOCITY = 1.75;
-
+const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 type Props = {
   imageSrc: ImageSource;
   onRequestClose: () => void;
   onZoom: (isZoomed: boolean) => void;
   onLoadEnd: () => void;
   onLoadStart: () => void;
+  onLongPress: (image: ImageSource) => void;
+  delayLongPress: number;
   swipeToCloseEnabled?: boolean;
   doubleTapToZoomEnabled?: boolean;
   SCREEN: DimensionsType;
@@ -44,11 +46,13 @@ const ImageItem = ({
   onLoadStart,
   onZoom,
   onRequestClose,
+  onLongPress,
+  delayLongPress,
   swipeToCloseEnabled = true,
   doubleTapToZoomEnabled = true,
   SCREEN,
 }: Props) => {
-  const imageContainer = React.createRef();
+  const imageContainer = React.createRef<any>();
   const imageDimensions = useImageDimensions(imageSrc);
   const [translate, scale] = getImageTransform(imageDimensions, SCREEN);
   const scrollValueY = new Animated.Value(0);
@@ -60,17 +64,23 @@ const ImageItem = ({
     if (imageContainer?.current) {
       // @ts-ignore
       imageContainer.current.setNativeProps({
-        scrollEnabled: !isZoomed
+        scrollEnabled: !isZoomed,
       });
     }
   };
 
-  const [panHandlers, scaleValue, translateValue] = useZoomPanResponder({
+  const onLongPressHandler = useCallback(() => {
+    onLongPress(imageSrc);
+  }, [imageSrc, onLongPress]);
+
+  const [panHandlers, scaleValue, translateValue] = usePanResponder({
     initialScale: scale || 1,
     initialTranslate: translate || { x: 0, y: 0 },
     onZoom: onZoomPerformed,
     doubleTapToZoomEnabled,
     SCREEN,
+    onLongPress: onLongPressHandler,
+    delayLongPress,
   });
 
   const imagesStyles = getImageStyles(
@@ -80,26 +90,27 @@ const ImageItem = ({
   );
   const imageOpacity = scrollValueY.interpolate({
     inputRange: [-SWIPE_CLOSE_OFFSET, 0, SWIPE_CLOSE_OFFSET],
-    outputRange: [0.7, 1, 0.7]
+    outputRange: [0.7, 1, 0.7],
   });
   const imageStylesWithOpacity = { ...imagesStyles, opacity: imageOpacity };
 
   const onScrollEndDrag = ({
-    nativeEvent
+    nativeEvent,
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const velocityY = nativeEvent?.velocity?.y ?? 0;
     const offsetY = nativeEvent?.contentOffset?.y ?? 0;
 
     if (
-      Math.abs(velocityY) > SWIPE_CLOSE_VELOCITY &&
-      offsetY > SWIPE_CLOSE_OFFSET
+      (Math.abs(velocityY) > SWIPE_CLOSE_VELOCITY &&
+        offsetY > SWIPE_CLOSE_OFFSET) ||
+      offsetY > SCREEN_HEIGHT / 2
     ) {
       onRequestClose();
     }
   };
 
   const onScroll = ({
-    nativeEvent
+    nativeEvent,
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = nativeEvent?.contentOffset?.y ?? 0;
 
@@ -118,7 +129,7 @@ const ImageItem = ({
       scrollEnabled={swipeToCloseEnabled}
       {...(swipeToCloseEnabled && {
         onScroll,
-        onScrollEndDrag
+        onScrollEndDrag,
       })}
     >
       <Animated.Image
@@ -136,12 +147,12 @@ const ImageItem = ({
 
 const styles = StyleSheet.create({
   listItem: {
-    width: '100%',
-    height: '100%',
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
   },
   imageScrollContainer: {
-    height: '200%',
-  }
+    height: SCREEN_HEIGHT * 2,
+  },
 });
 
 export default React.memo(ImageItem);

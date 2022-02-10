@@ -6,6 +6,8 @@
  *
  */
 
+import { ImageURISource, ImageRequireSource } from "react-native";
+
 export type Dimensions = {
   width: number;
   height: number;
@@ -16,4 +18,18 @@ export type Position = {
   y: number;
 };
 
-export type ImageSource = { uri: string, type: String, print_button: Boolean, thumbnail_url: String, media_url: String };
+export type ImageSource = {
+  uri?: string,
+  bundle?: string,
+  method?: string,
+  headers?: { [key: string]: string },
+  cache?: 'default' | 'reload' | 'force-cache' | 'only-if-cached',
+  body?: string,
+  width?: number,
+  height?: number,
+  scale?: number,
+  type: String, 
+  print_button: Boolean, 
+  thumbnail_url: String, 
+  media_url: String
+} | ImageRequireSource;

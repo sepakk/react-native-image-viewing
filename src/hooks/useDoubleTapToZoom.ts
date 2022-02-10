@@ -10,7 +10,7 @@ import React, { useCallback } from "react";
 import {
   ScrollView,
   NativeTouchEvent,
-  NativeSyntheticEvent
+  NativeSyntheticEvent,
 } from "react-native";
 
 import { Dimensions } from "../@types";
@@ -20,7 +20,7 @@ let lastTapTS: number | null = null;
 
 /**
  * This is iOS only.
- * Same functionality for Android implemented inside useZoomPanResponder hook.
+ * Same functionality for Android implemented inside usePanResponder hook.
  */
 function useDoubleTapToZoom(
   scrollViewRef: React.RefObject<ScrollView>,
@@ -54,7 +54,7 @@ function useDoubleTapToZoom(
           y: targetY,
           width: targetWidth,
           height: targetHeight,
-          animated: true
+          animated: true,
         });
       } else {
         lastTapTS = nowTS;
